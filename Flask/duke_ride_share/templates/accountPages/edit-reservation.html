@@ -1,0 +1,67 @@
+{% extends 'accountPages/account.html' %}
+{% block content %}
+<div class="container-fluid text-center">    
+    <div class="row content">
+        <div class="col-sm-8 text-left"> 
+            <h1>Edit a Reservation</h1>
+            <hr>
+            <!--Print flashed messages-->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <h3><b><font color="red"> {{ message }}</font></b></h3>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+            {% if userHasRev %}
+
+              <!--Print errors from validators (checks if comments too long)-->
+              {% for message in form.comments.errors %}
+                  <div>{{ message }}</div>
+              {% endfor %}
+
+              <h3>Editing reservation of ride {{ride.ride_no}} from <b>{{ride.origin }}</b> to 
+                <b>{{ride.destination }}</b> on <b>{{ ride.date }}</b> </h3>
+              <center>
+                
+                <!--Form to collect information from the user about the reservation they are editing-
+                  default value for the spots needed is the spots needed they currently have-->
+                <form action = "{{url_for('rides.edit_rev_main', rideNo=reservation.ride_no)}}"  onsubmit="return validateForm();" method="post">
+                  <div style = font-size:14px; font-weight:bold; margin-left:150px;>
+                  {{ form.csrf_token }}
+
+                  {{ form.spots_needed.label }}<br>
+                  {{ form.spots_needed(value=reservation.seats_needed)}}
+                  <br>
+
+                  {{ form.comments.label }}<br>
+                  {{ form.comments(value=reservation.note)}}
+                  <br>
+              
+
+                  {{ form.cancel.label }}<br>
+                  {{ form.cancel}}
+                  <br>
+                  <br>
+
+                </div>
+                <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+                  {{ form.submit }}
+                </div>
+                </form>
+                
+              </center>
+            {% endif %}
+
+            {% if not userHasRev %}
+              <div>
+                <h4><b>You have not reserved this ride and cannot edit a reservation. </b></h4>
+              </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

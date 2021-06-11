@@ -1,0 +1,110 @@
+{% extends 'basicRidePages/home.html' %}
+<link rel="stylesheet" type = "text/css" href = "/static/css/style.css">
+
+{% block content %}
+<div class="container-fluid text-center">    
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+            <!-- empty left sidebar -->
+        </div>
+        <!--Prints flashed messages-->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <h3><b><p style="color:red"> {{ message }}</p></b></h3>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        
+
+        <div class="col-sm-8 text-left"> 
+            <h1>Search for New Rides</h1>
+            <!--Prints errors from form validators-->
+            {% for message in searchForm.destination.errors %}
+                <p><b>{{ message }}</b></p>
+            {% endfor %}
+
+            {% for message in searchForm.date.errors %}
+                <p><b>{{ message }}</b></p>
+            {% endfor %}
+            <p style="font-size:16px">Rides posted or reserved by you will not appear here. For these rides visit your <a href="{{url_for('rides.account_main')}}">account page</a>.
+                You may search for rides on or before today's date.</p>
+            <hr>
+            
+            <!--Form to collect information about the ride the user is searching for-->
+            <form method="post" action = "/rides/find-rides" onsubmit="return validateForm();">
+                {{ searchForm.csrf_token }}
+
+                {{ searchForm.origin_city.label }}
+                {{ searchForm.origin_city }}
+                {{ searchForm.destination.label }}
+                {{ searchForm.destination }}
+                <br>
+                {{ searchForm.date.label }}
+                {{ searchForm.date (placeholder='YYYY-MM-DD') }}
+
+                {{ searchForm.spots_needed.label }}
+                {{ searchForm.spots_needed }}
+                <br>
+                {{ searchForm.submit }}
+            </form>
+            <hr>
+            <hr>
+
+            <!--If the user has already submitted the search form the results are posted below if results are found
+                (if not the user is told no results were found-->
+            {% if results %}
+            <div>
+                <h3> Results: </h3>
+                <table style="border-collapse: collapse; width: 100%">
+                    <tr style="border: 1px solid black;">
+                        <th style="width: 10%; border: 1px solid black; text-align: center"> Ride Number </th>
+                        <th style="width: 15%; border: 1px solid black; text-align: center"> Origin </th>
+                        <th style="width: 15%; border: 1px solid black; text-align: center"> Destination </th>
+                        <th style="width: 12%; border: 1px solid black; text-align: center"> Date </th>
+                        <th style="width: 20; border: 1px solid black; text-align: center"> Earliest Departure </th>
+                        <th style="width: 20%; border: 1px solid black; text-align: center"> Latest Departure </th>
+                        <th style="width: 8%; border: 1px solid black; text-align: center"> Spots Available </th>
+                        <th style="width: 8%; border: 1px solid black; text-align: center"> Max Spots Available </th>
+                        <th style="width: 8%; border: 1px solid black; text-align: center"> Gas Price </th>
+                        <th style="width: 10%; border: 1px solid black; text-align: center"> Comments </th>
+                        <th style="width: 10%; border: 1px solid black; text-align: center"> Book </th>
+                    </tr>
+                    {% for ride in results %}
+                    <tr>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.ride_no }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.origin }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.destination }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.date }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.earliest_departure }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.latest_departure }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.seats_available }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.max_seats_available }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.gas_price }} </td>
+                        <td style="border: 1px solid black; padding: 3px"> {{ ride.comments }} </td>
+                        <td><button onclick="window.location.href='{{url_for('rides.reserve_ride_main', rideNo=ride.ride_no, spots_needed=spots_needed)}}';">Reserve Ride </button></td>
+                        <!--<td><form method="get"><button type="submit" 
+                            formaction="{{url_for('rides.reserve_ride_main', rideNo=ride.ride_no, spots_needed=spots_needed)}}"> Reserve Ride </button></form></td>-->
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+        <div class="col-sm-8 text-left"> 
+            {% if results == [] %}
+            <div>
+                <h3> No rides found </h3>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-sm-2 sidenav">
+            <!-- empty right sidebar-->
+        </div>
+    </div>
+</div>
+{% endblock %}
