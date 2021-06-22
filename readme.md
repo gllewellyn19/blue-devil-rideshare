@@ -1,5 +1,5 @@
 ## Welcome to Blue Devil Rideshare, a convenient way for Duke students to carpool and help reduce the costs of gas money! 
-### Note: this readme is still a work in progress and does not run correctly after some alterations to the code. However, the code is posted here for viewing examples of modular, readable programming
+![Screenshot home page](home_page.png)
 These apps are delivered using docker containers. The flask app and the postgres database communicated with the docker network via a docker-compose.yml.
 
 1. In order to launch this web app, you must first download Docker. Download Docker [here.](https://www.docker.com/get-started)
@@ -11,12 +11,14 @@ These apps are delivered using docker containers. The flask app and the postgres
 4. 
 * (For Mac/ Linux): Open a new terminal window and switch into the root directory of the project (`Blue-Devil-Rideshare/Flask`). Run `./setup_db.sh` 
 * (For Windows): Open a new Powershell and switch into the root directory of the project (`Blue-Devil-Rideshare/Flask`). 
-	* `docker-compose run web bash`
-	* `psql -h db -U rideshare -d production -a -f create.sql`
-	* `psql -h db -U rideshare -d production -a -f load.sql`
+	1. `docker-compose run web bash`
+	2. `psql -h db -U rideshare -d production -a -f create.sql`
+	3. `psql -h db -U rideshare -d production -a -f load.sql`
 
 5. Lastly, go to `localhost:8080/rides/` and have fun exploring!
 
 
 ### Additional notes
+* There is a demo video called `rideshare_demo.mov` in the top most level
 * You must enter a valid duke email address (i.e. ending in @duke.edu) to register, but you may enter a fake email address that ends in @duke.edu. This check is to show that in theory this site should only allow duke users to join and if collaboration with Duke was attained, Duke Shibboleth would be used for registering. 
+* For troubleshooting if the page is loading for a long time, try repeating the action (i.e. pressing the button again)

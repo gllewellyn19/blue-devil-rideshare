@@ -22,7 +22,7 @@ CREATE TABLE Ride
  latest_departure TIME CHECK (latest_departure >= earliest_departure),
  seats_available INTEGER NOT NULL,
  max_seats_available INTEGER NOT NULL, 
- gas_price MONEY NOT NULL,
+ gas_price NUMERIC NOT NULL,
  comments VARCHAR(200));
 
 CREATE TABLE Reserve
