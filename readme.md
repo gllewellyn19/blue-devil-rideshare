@@ -1,5 +1,5 @@
 ## Welcome to Blue Devil Rideshare, a convenient way for Duke students to carpool and help reduce the costs of gas money! 
-![Screenshot home page](home_page.png)
+![Screenshot home page](home_page.png)<br>
 These apps are delivered using docker containers. The flask app and the postgres database communicated with the docker network via a docker-compose.yml.
 
 1. In order to launch this web app, you must first download Docker. Download Docker [here.](https://www.docker.com/get-started)
